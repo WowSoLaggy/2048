@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game2k.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -156,8 +157,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Field.h" />
     <ClInclude Include="Game2k.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LaggyDx\LaggyDx\LaggyDx.vcxproj">
