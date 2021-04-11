@@ -22,14 +22,15 @@ private:
   Dx::Sprite d_back;
   void renderBack();
 
+  std::shared_ptr<Dx::Label> d_scoreLabel;
+  std::shared_ptr<Dx::Label> d_helpLabel;
   std::shared_ptr<Dx::Panel> d_endPanel;
   std::shared_ptr<Dx::Label> d_endLabel;
-  void createEndControls();
+  void createGui();
 
   Field d_field;
 
   int d_score = 0;
-  std::shared_ptr<Dx::Label> d_scoreLabel;
   void setScore(int i_score);
 
   void clearTiles();

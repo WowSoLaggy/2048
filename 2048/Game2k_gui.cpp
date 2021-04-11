@@ -7,6 +7,33 @@
 #include <LaggyDx/IFontResource.h>
 
 
+void Game2k::createGui()
+{
+  d_endPanel = std::make_shared<Dx::Panel>();
+  d_endPanel->setTexture("blank.png");
+  d_endPanel->setSize({ (float)getGameSettings().screenWidth, (float)getGameSettings().screenHeight });
+  d_endPanel->setColor(Dx::colorWithAlpha(Dx::Colors::Black, 0.8f));
+
+  d_endLabel = std::make_shared<Dx::Label>();
+  d_endLabel->setFont("play.spritefont");
+  d_endLabel->setTextColor(Dx::Colors::Gold);
+
+  d_scoreLabel = std::make_shared<Dx::Label>();
+  d_scoreLabel->setFont("play.spritefont");
+  d_scoreLabel->setTextColor(Dx::Colors::DarkGreen);
+  d_scoreLabel->setPosition({ 100, 100 });
+  getForm().addChild(d_scoreLabel);
+
+  d_helpLabel = std::make_shared<Dx::Label>();
+  d_helpLabel->setFont("play.spritefont");
+  d_helpLabel->setTextColor(Dx::Colors::DarkGreen);
+  d_helpLabel->setTextScale(0.33f);
+  d_helpLabel->setText("Esc - exit\nF5 - new game");
+  d_helpLabel->setPosition({ 600, 0 });
+  getForm().addChild(d_helpLabel);
+}
+
+
 void Game2k::showEndScore()
 {
   setEndScoreText();
@@ -32,17 +59,4 @@ void Game2k::setEndScoreText()
   d_endLabel->setPosition({
     (float)(getGameSettings().screenWidth - rect.width()) / 2.0f,
     (float)(getGameSettings().screenHeight - rect.height()) / 2.0f });
-}
-
-
-void Game2k::createEndControls()
-{
-  d_endPanel = std::make_shared<Dx::Panel>();
-  d_endPanel->setTexture("blank.png");
-  d_endPanel->setSize({ (float)getGameSettings().screenWidth, (float)getGameSettings().screenHeight });
-  d_endPanel->setColor(Dx::colorWithAlpha(Dx::Colors::Black, 0.8f));
-
-  d_endLabel = std::make_shared<Dx::Label>();
-  d_endLabel->setFont("play.spritefont");
-  d_endLabel->setTextColor(Dx::Colors::Gold);
 }

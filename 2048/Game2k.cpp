@@ -34,12 +34,7 @@ void Game2k::onGameStart()
   d_back.setTexture(getResourceController().getTextureResource("back.png"));
   d_back.resetSizeToTexture();
 
-  createEndControls();
-
-  d_scoreLabel = std::make_shared<Dx::Label>();
-  d_scoreLabel->setFont("play.spritefont");
-  d_scoreLabel->setTextColor(Dx::Colors::OrangeRed);
-  getForm().addChild(d_scoreLabel);
+  createGui();
 
   createActions();
   startNewGame();
