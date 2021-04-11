@@ -18,6 +18,8 @@ public:
   void setDestination(const Sdk::Vector2I& i_destCoords);
   bool isInAnimation() const;
 
+  virtual void setScale(Sdk::Vector2D i_scale) override;
+
   virtual void update(double i_dt) override;
 
 private:
@@ -25,4 +27,6 @@ private:
   Sdk::Vector2I d_coords;
 
   std::optional<Sdk::Vector2D> d_destination;
+
+  bool d_isScaling = false;
 };

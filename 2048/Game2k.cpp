@@ -89,6 +89,7 @@ void Game2k::generateNewTile()
 
   auto tile = std::make_shared<Tile>(2);
   setTileCoords(*tile, coords);
+  tile->setScale({ 0.1, 0.1 });
   getObjectCollection().addObject(tile);
 }
 

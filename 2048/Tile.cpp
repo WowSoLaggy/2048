@@ -88,7 +88,14 @@ void Tile::setDestination(const Sdk::Vector2I& i_destCoords)
 
 bool Tile::isInAnimation() const
 {
-  return d_destination.has_value();
+  return d_destination.has_value() || d_isScaling;
+}
+
+
+void Tile::setScale(Sdk::Vector2D i_scale)
+{
+  d_isScaling = true;
+  ObjectBase::setScale(std::move(i_scale));
 }
 
 
@@ -105,5 +112,19 @@ void Tile::update(const double i_dt)
     setSpeed(Sdk::Vector2D::zero());
     setPosition(getCellPosition(d_coords));
     d_destination.reset();
+  }
+
+  if (d_isScaling)
+  {
+    const auto scale = getScale();
+    const auto newScale = getScale() + Sdk::Vector2D{ i_dt * 8, i_dt * 8 };
+
+    if (newScale.x > 0.99)
+    {
+      setScale({ 1.0, 1.0 });
+      d_isScaling = false;
+    }
+    else
+      setScale(newScale);
   }
 }
