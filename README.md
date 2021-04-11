@@ -15,4 +15,8 @@ Game is over when there are no possible moves are available.
 'W' - swipe up  
 'S' - swipe down  
 'A' - swipe left  
-'D' - swipe right  
+'D' - swipe right
+
+## Used code
+[LaggyDx](https://github.com/WowSoLaggy/LaggyDx) is used as a DirectX framework  
+[LaggySdk](https://github.com/WowSoLaggy/LaggySdk) is used as an SDK framework
