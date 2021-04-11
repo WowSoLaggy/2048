@@ -15,6 +15,7 @@ public:
   Tile* getTile(const Sdk::Vector2I& i_coords) const;
   void setTile(Tile& i_tile, const Sdk::Vector2I& i_coords);
   void resetTile(const Sdk::Vector2I& i_coords);
+  void resetTiles();
 
   bool hasEmptyField() const;
 

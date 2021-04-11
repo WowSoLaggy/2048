@@ -3,6 +3,8 @@
 #include "Field.h"
 
 #include <LaggyDx/Game.h>
+#include <LaggyDx/Label.h>
+#include <LaggyDx/Panel.h>
 #include <LaggyDx/Sprite.h>
 
 
@@ -20,18 +22,36 @@ private:
   Dx::Sprite d_back;
   void renderBack();
 
+  std::shared_ptr<Dx::Panel> d_endPanel;
+  std::shared_ptr<Dx::Label> d_endLabel;
+  void createEndControls();
+
   Field d_field;
 
+  int d_score = 0;
+  std::shared_ptr<Dx::Label> d_scoreLabel;
+  void setScore(int i_score);
+
+  void clearTiles();
+  void startNewGame();
   void generateStartTiles();
   void generateNewTile();
 
-  bool checkInsideField(const Sdk::Vector2I& i_coords);
+  bool checkInsideField(const Sdk::Vector2I& i_coords) const;
 
   void setTileCoords(Tile& i_tile, Sdk::Vector2I i_coords);
-  void moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction);
+  bool moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction);
 
   void onUp();
   void onDown();
   void onLeft();
   void onRight();
+
+  void onNewTurn();
+  void endGame();
+  void showEndScore();
+  void hideEndScore();
+  void setEndScoreText();
+
+  bool isGameOver() const;
 };

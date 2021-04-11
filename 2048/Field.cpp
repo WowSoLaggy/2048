@@ -4,8 +4,7 @@
 
 Field::Field()
 {
-  for (auto& tile : d_field)
-    tile = nullptr;
+  resetTiles();
 }
 
 
@@ -22,6 +21,12 @@ void Field::setTile(Tile& i_tile, const Sdk::Vector2I& i_coords)
 void Field::resetTile(const Sdk::Vector2I& i_coords)
 {
   d_field.at(i_coords.x + i_coords.y * Size) = nullptr;
+}
+
+void Field::resetTiles()
+{
+  for (auto& tile : d_field)
+    tile = nullptr;
 }
 
 

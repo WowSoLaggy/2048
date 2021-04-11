@@ -149,6 +149,8 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game2k.cpp" />
     <ClCompile Include="Game2k_actions.cpp" />
+    <ClCompile Include="Game2k_gui.cpp" />
+    <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -161,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game2k.h" />
+    <ClInclude Include="GameSettings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>

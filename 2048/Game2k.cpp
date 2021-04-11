@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Game2k.h"
 
+#include "GameSettings.h"
+
 #include <LaggyDx/Colors.h>
 #include <LaggyDx/GameSettings.h>
 #include <LaggyDx/IRenderDevice.h>
@@ -10,31 +12,6 @@
 
 namespace
 {
-  const std::map<int, std::string> TexturesMap = {
-    { 2, "2.png" },
-    { 4, "4.png" },
-    { 8, "8.png" },
-    { 16, "16.png" },
-    { 32, "32.png" },
-    { 64, "64.png" },
-    { 128, "128.png" },
-    { 256, "256.png" },
-    { 512, "512.png" },
-    { 1024, "1024.png" },
-    { 2048, "2048.png" },
-    { 4096, "4096.png" },
-    { 8192, "8192.png" },
-    { 16384, "16384.png" },
-    { 32768, "32768.png" },
-    { 65536, "65536.png" },
-  };
-
-  const Dx::GameSettings& getGameSettings()
-  {
-    static const Dx::GameSettings gameSettings{ 800, 800, "2048", "Data/Assets/" };
-    return gameSettings;
-  }
-
   int getRandomField()
   {
     static Sdk::UniformIntGenerator<int> gen(0, 3);
@@ -57,8 +34,17 @@ void Game2k::onGameStart()
   d_back.setTexture(getResourceController().getTextureResource("back.png"));
   d_back.resetSizeToTexture();
 
+  createEndControls();
+
+  d_scoreLabel = std::make_shared<Dx::Label>();
+  d_scoreLabel->setFont("play.spritefont");
+  d_scoreLabel->setTextColor(Dx::Colors::OrangeRed);
+  getForm().addChild(d_scoreLabel);
+
   createActions();
-  generateStartTiles();
+  startNewGame();
+
+  getInputDevice().showCursor();
 }
 
 
@@ -74,6 +60,20 @@ void Game2k::renderBack()
   getRenderer2d().renderSprite(d_back);
 }
 
+
+void Game2k::clearTiles()
+{
+  d_field.resetTiles();
+  getObjectCollection().getObjects().clear();
+}
+
+void Game2k::startNewGame()
+{
+  clearTiles();
+  generateStartTiles();
+  hideEndScore();
+  setScore(0);
+}
 
 void Game2k::generateStartTiles()
 {
@@ -92,14 +92,13 @@ void Game2k::generateNewTile()
     coords.y = getRandomField();
   } while (d_field.getTile(coords) != nullptr);
 
-  auto tile = std::make_shared<Tile>();
-  tile->setTexture(TexturesMap.at(tile->value));
+  auto tile = std::make_shared<Tile>(2);
   setTileCoords(*tile, coords);
   getObjectCollection().addObject(tile);
 }
 
 
-bool Game2k::checkInsideField(const Sdk::Vector2I& i_coords)
+bool Game2k::checkInsideField(const Sdk::Vector2I& i_coords) const
 {
   return
     0 <= i_coords.x && i_coords.x < d_field.Size &&
@@ -113,10 +112,12 @@ void Game2k::setTileCoords(Tile& i_tile, Sdk::Vector2I i_coords)
   i_tile.setCoords(std::move(i_coords));
 }
 
-void Game2k::moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction)
+bool Game2k::moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction)
 {
   const auto oldPos = i_tile.getCoords();
   auto newPos = i_tile.getCoords();
+
+  bool wasMerge = false;
 
   while (true)
   {
@@ -126,14 +127,84 @@ void Game2k::moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction)
       break;
 
     if (auto* nextTile = d_field.getTile(predictedPos))
-      break;
+    {
+      if (nextTile->getValue() != i_tile.getValue() || wasMerge)
+        break;
+      else
+      {
+        getObjectCollection().deleteObject(*nextTile);
+        d_field.resetTile(predictedPos);
+        i_tile.setNextValue();
+
+        setScore(d_score + i_tile.getValue());
+
+        wasMerge = true;
+      }
+    }
 
     newPos = predictedPos;
   }
 
-  if (newPos != oldPos)
+  if (newPos == oldPos)
+    return false;
+
+  d_field.resetTile(oldPos);
+  setTileCoords(i_tile, newPos);
+  return true;
+}
+
+
+void Game2k::onNewTurn()
+{
+  if (d_field.hasEmptyField())
+    generateNewTile();
+
+  if (isGameOver())
+    endGame();
+}
+
+void Game2k::endGame()
+{
+  showEndScore();
+}
+
+
+bool Game2k::isGameOver() const
+{
+  if (d_field.hasEmptyField())
+    return false;
+
+  auto getValue = [&](const Sdk::Vector2I& i_coords) -> std::optional<int>
   {
-    d_field.resetTile(oldPos);
-    setTileCoords(i_tile, newPos);
+    if (!checkInsideField(i_coords))
+      return std::nullopt;
+
+    if (const auto* tile = d_field.getTile(i_coords))
+      return tile->getValue();
+
+    return std::nullopt;
+  };
+
+  for (int y = 0; y < d_field.Size; ++y)
+  {
+    for (int x = 0; x < d_field.Size; ++x)
+    {
+      const auto* tile = d_field.getTile({ x, y });
+      CONTRACT_ASSERT(tile);
+
+      if (const auto valueOpt = getValue({ x + 1, y }); valueOpt && *valueOpt == tile->getValue())
+        return false;
+      if (const auto valueOpt = getValue({ x, y + 1 }); valueOpt && *valueOpt == tile->getValue())
+        return false;
+    }
   }
+
+  return true;
+}
+
+
+void Game2k::setScore(const int i_score)
+{
+  d_score = i_score;
+  d_scoreLabel->setText("Score: " + std::to_string(i_score));
 }
