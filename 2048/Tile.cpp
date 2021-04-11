@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Tile.h"
 
+#include "Utils.h"
+
 
 namespace
 {
@@ -22,6 +24,16 @@ namespace
     { 32768, "32768.png" },
     { 65536, "65536.png" },
   };
+
+  int getIntMultiplier(const double i_value1, const double i_value2)
+  {
+    if (i_value1 > i_value2)
+      return +1;
+    else if (i_value1 < i_value2)
+      return -1;
+    else
+      return 0;
+  }
 
 } // anonym NS
 
@@ -51,11 +63,47 @@ int Tile::getValue() const
 
 void Tile::setCoords(Sdk::Vector2I i_coords)
 {
+  setPosition(getCellPosition(i_coords));
   d_coords = std::move(i_coords);
-  setPosition({ 196.0 + double(d_coords.x * (128 + 8)), 273.0 + double(d_coords.y * (128 + 8)) });
 }
 
 const Sdk::Vector2I& Tile::getCoords() const
 {
   return d_coords;
+}
+
+
+void Tile::setDestination(const Sdk::Vector2I& i_destCoords)
+{
+  d_destination = getCellPosition(i_destCoords);
+  d_coords = i_destCoords;
+
+  const auto curPosition = getPosition();
+
+  constexpr double SpeedValue = 4000;
+  const int speedSignX = getIntMultiplier(d_destination->x, curPosition.x);
+  const int speedSignY = getIntMultiplier(d_destination->y, curPosition.y);
+  setSpeed({ speedSignX * SpeedValue, speedSignY * SpeedValue });
+}
+
+bool Tile::isInAnimation() const
+{
+  return d_destination.has_value();
+}
+
+
+void Tile::update(const double i_dt)
+{
+  ObjectBase::update(i_dt);
+
+  if (d_destination)
+  {
+    const auto diff = getPosition() - *d_destination;
+    if (diff.dot(getSpeed()) < 0)
+      return;
+
+    setSpeed(Sdk::Vector2D::zero());
+    setPosition(getCellPosition(d_coords));
+    d_destination.reset();
+  }
 }

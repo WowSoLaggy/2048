@@ -29,6 +29,9 @@ void Game2k::createActions()
 
 void Game2k::onUp()
 {
+  if (isInAnimation())
+    return;
+
   bool wasMove = false;
 
   for (int y = 0; y < d_field.Size; ++y)
@@ -46,6 +49,9 @@ void Game2k::onUp()
 
 void Game2k::onDown()
 {
+  if (isInAnimation())
+    return;
+
   bool wasMove = false;
 
   for (int y = d_field.Size - 1; y >= 0; --y)
@@ -63,6 +69,9 @@ void Game2k::onDown()
 
 void Game2k::onLeft()
 {
+  if (isInAnimation())
+    return;
+
   bool wasMove = false;
 
   for (int y = 0; y < d_field.Size; ++y)
@@ -80,6 +89,9 @@ void Game2k::onLeft()
 
 void Game2k::onRight()
 {
+  if (isInAnimation())
+    return;
+
   bool wasMove = false;
 
   for (int y = 0; y < d_field.Size; ++y)

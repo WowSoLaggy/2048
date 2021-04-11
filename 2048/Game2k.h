@@ -30,6 +30,8 @@ private:
 
   Field d_field;
 
+  bool isInAnimation() const;
+
   int d_score = 0;
   void setScore(int i_score);
 

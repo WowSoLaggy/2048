@@ -9,23 +9,25 @@
 
 void Game2k::createGui()
 {
+  const std::string FontName = "play.spritefont";
+
   d_endPanel = std::make_shared<Dx::Panel>();
   d_endPanel->setTexture("blank.png");
   d_endPanel->setSize({ (float)getGameSettings().screenWidth, (float)getGameSettings().screenHeight });
   d_endPanel->setColor(Dx::colorWithAlpha(Dx::Colors::Black, 0.8f));
 
   d_endLabel = std::make_shared<Dx::Label>();
-  d_endLabel->setFont("play.spritefont");
+  d_endLabel->setFont(FontName);
   d_endLabel->setTextColor(Dx::Colors::Gold);
 
   d_scoreLabel = std::make_shared<Dx::Label>();
-  d_scoreLabel->setFont("play.spritefont");
+  d_scoreLabel->setFont(FontName);
   d_scoreLabel->setTextColor(Dx::Colors::DarkGreen);
   d_scoreLabel->setPosition({ 100, 100 });
   getForm().addChild(d_scoreLabel);
 
   d_helpLabel = std::make_shared<Dx::Label>();
-  d_helpLabel->setFont("play.spritefont");
+  d_helpLabel->setFont(FontName);
   d_helpLabel->setTextColor(Dx::Colors::DarkGreen);
   d_helpLabel->setTextScale(0.33f);
   d_helpLabel->setText("Esc - exit\nF5 - new game");

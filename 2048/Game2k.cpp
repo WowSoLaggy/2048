@@ -143,8 +143,10 @@ bool Game2k::moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction)
   if (newPos == oldPos)
     return false;
 
+  i_tile.setDestination(newPos);
   d_field.resetTile(oldPos);
-  setTileCoords(i_tile, newPos);
+  d_field.setTile(i_tile, newPos);
+
   return true;
 }
 
@@ -202,4 +204,15 @@ void Game2k::setScore(const int i_score)
 {
   d_score = i_score;
   d_scoreLabel->setText("Score: " + std::to_string(i_score));
+}
+
+
+bool Game2k::isInAnimation() const
+{
+  const auto& objects = getObjectCollection().getObjects();
+  return std::any_of(objects.cbegin(), objects.cend(),
+                     [](const auto& i_objPtr)
+                     {
+                       return std::dynamic_pointer_cast<Tile>(i_objPtr)->isInAnimation();
+                     });
 }

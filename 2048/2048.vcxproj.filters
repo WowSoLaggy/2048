@@ -13,6 +13,9 @@
     <Filter Include="src\GameSettings">
       <UniqueIdentifier>{51ad17cc-bc02-4993-9031-0abe9d022a58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Utils">
+      <UniqueIdentifier>{a7323eb3-1414-45fe-88da-786755405eef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,6 +42,9 @@
     <ClCompile Include="GameSettings.cpp">
       <Filter>src\GameSettings</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -55,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="GameSettings.h">
       <Filter>src\GameSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="Fwd.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

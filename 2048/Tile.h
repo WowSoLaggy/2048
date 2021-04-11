@@ -15,7 +15,14 @@ public:
   void setCoords(Sdk::Vector2I i_coords);
   const Sdk::Vector2I& getCoords() const;
 
+  void setDestination(const Sdk::Vector2I& i_destCoords);
+  bool isInAnimation() const;
+
+  virtual void update(double i_dt) override;
+
 private:
   int d_value = 2;
   Sdk::Vector2I d_coords;
+
+  std::optional<Sdk::Vector2D> d_destination;
 };
