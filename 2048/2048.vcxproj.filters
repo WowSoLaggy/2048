@@ -24,6 +24,12 @@
     <ClCompile Include="Field.cpp">
       <Filter>src\Field</Filter>
     </ClCompile>
+    <ClCompile Include="Game2k_actions.cpp">
+      <Filter>src\Game2k</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>src\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

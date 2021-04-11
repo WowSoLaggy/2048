@@ -57,6 +57,7 @@ void Game2k::onGameStart()
   d_back.setTexture(getResourceController().getTextureResource("back.png"));
   d_back.resetSizeToTexture();
 
+  createActions();
   generateStartTiles();
 }
 
@@ -83,18 +84,56 @@ void Game2k::generateStartTiles()
 
 void Game2k::generateNewTile()
 {
-  int x = 0;
-  int y = 0;
+  Sdk::Vector2I coords;
 
   do
   {
-    x = getRandomField();
-    y = getRandomField();
-  } while (d_field.getTile(x, y) != nullptr);
+    coords.x = getRandomField();
+    coords.y = getRandomField();
+  } while (d_field.getTile(coords) != nullptr);
 
   auto tile = std::make_shared<Tile>();
-  tile->setTexture(TexturesMap.at(tile->getValue()));
-  tile->setPosition({ 196.0 + double(x * (128 + 8)), 273.0 + double(y * (128 + 8)) });
+  tile->setTexture(TexturesMap.at(tile->value));
+  setTileCoords(*tile, coords);
   getObjectCollection().addObject(tile);
-  d_field.setTile(*tile, x, y);
+}
+
+
+bool Game2k::checkInsideField(const Sdk::Vector2I& i_coords)
+{
+  return
+    0 <= i_coords.x && i_coords.x < d_field.Size &&
+    0 <= i_coords.y && i_coords.y < d_field.Size;
+}
+
+
+void Game2k::setTileCoords(Tile& i_tile, Sdk::Vector2I i_coords)
+{
+  d_field.setTile(i_tile, i_coords);
+  i_tile.setCoords(std::move(i_coords));
+}
+
+void Game2k::moveTile(Tile& i_tile, const Sdk::Vector2I& i_direction)
+{
+  const auto oldPos = i_tile.getCoords();
+  auto newPos = i_tile.getCoords();
+
+  while (true)
+  {
+    auto predictedPos = newPos + i_direction;
+
+    if (!checkInsideField(predictedPos))
+      break;
+
+    if (auto* nextTile = d_field.getTile(predictedPos))
+      break;
+
+    newPos = predictedPos;
+  }
+
+  if (newPos != oldPos)
+  {
+    d_field.resetTile(oldPos);
+    setTileCoords(i_tile, newPos);
+  }
 }

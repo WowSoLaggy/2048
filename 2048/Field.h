@@ -2,6 +2,8 @@
 
 #include "Tile.h"
 
+#include <LaggySdk/Vector.h>
+
 
 class Field
 {
@@ -10,9 +12,9 @@ public:
 
   Field();
 
-  Tile* getTile(int x, int y) const;
-  void setTile(Tile& i_tile, int x, int y);
-  void resetTile(int x, int y);
+  Tile* getTile(const Sdk::Vector2I& i_coords) const;
+  void setTile(Tile& i_tile, const Sdk::Vector2I& i_coords);
+  void resetTile(const Sdk::Vector2I& i_coords);
 
   bool hasEmptyField() const;
 

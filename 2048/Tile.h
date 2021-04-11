@@ -6,9 +6,11 @@
 class Tile : public Dx::ObjectBase
 {
 public:
-  int getValue() const { return d_value; }
-  void setValue(const int i_value) { d_value = i_value; }
+  int value = 2;
+
+  void setCoords(Sdk::Vector2I i_coords);
+  const Sdk::Vector2I& getCoords() const;
 
 private:
-  int d_value = 2;
+  Sdk::Vector2I d_coords;
 };

@@ -9,19 +9,19 @@ Field::Field()
 }
 
 
-Tile* Field::getTile(int x, int y) const
+Tile* Field::getTile(const Sdk::Vector2I& i_coords) const
 {
-  return d_field.at(x + y * Size);
+  return d_field.at(i_coords.x + i_coords.y * Size);
 }
 
-void Field::setTile(Tile& i_tile, int x, int y)
+void Field::setTile(Tile& i_tile, const Sdk::Vector2I& i_coords)
 {
-  d_field.at(x + y * Size) = &i_tile;
+  d_field.at(i_coords.x + i_coords.y * Size) = &i_tile;
 }
 
-void Field::resetTile(int x, int y)
+void Field::resetTile(const Sdk::Vector2I& i_coords)
 {
-  d_field.at(x + y * Size) = nullptr;
+  d_field.at(i_coords.x + i_coords.y * Size) = nullptr;
 }
 
 
