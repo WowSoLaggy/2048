@@ -18,5 +18,5 @@ Game is over when there are no possible moves are available.
 'D' - swipe right
 
 ## Used code
-[LaggyDx](https://github.com/WowSoLaggy/LaggyDx) is used as a DirectX framework  
-[LaggySdk](https://github.com/WowSoLaggy/LaggySdk) is used as an SDK framework
+[LaggyDx](https://github.com/WowSoLaggy/LaggyDx) is used as a DirectX framework.  
+[LaggySdk](https://github.com/WowSoLaggy/LaggySdk) is used as an SDK framework.
